@@ -14,6 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors; // ✅ Required for Java 11
 
 @Service
 public class SalesforceService {
@@ -33,14 +34,15 @@ public class SalesforceService {
     public List<OpportunityDTO> fetchOpportunities() {
         try {
             String soql = "SELECT Id, AccountId, Name, StageName, CloseDate FROM Opportunity";
-            String url = String.format("%s/services/data/v64.0/query?q=%s", instanceUrl,
-                    URLEncoder.encode(soql, StandardCharsets.UTF_8));
+            String url = String.format("%s/services/data/v64.0/query?q=%s",instanceUrl,soql);
+
 
             HttpHeaders headers = new HttpHeaders();
             headers.setBearerAuth(accessToken);
             HttpEntity<Void> entity = new HttpEntity<>(headers);
 
             ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.GET, entity, Map.class);
+            //System.out.println("Raw Salesforce response: " + response.getBody());
 
             List<Map<String, Object>> records = (List<Map<String, Object>>) response.getBody().get("records");
             if (records == null) {
@@ -48,12 +50,14 @@ public class SalesforceService {
             }
 
             return records.stream().map(rec -> new OpportunityDTO(
-                    (String) rec.get("Id"),
-                    (String) rec.get("AccountId"),
-                    (String) rec.get("Name"),
-                    (String) rec.get("StageName"),
-                    (String) rec.get("CloseDate")
-            )).toList();
+                (String) rec.get("Id"),
+                (String) rec.get("AccountId"),
+                (String) rec.get("Name"),
+                (String) rec.get("StageName"),
+                (String) rec.get("CloseDate"),
+                (Map<String, Object>) rec.get("attributes") // <- Include attributes
+                )).collect(Collectors.toList());
+
         } catch (Exception e) {
             e.printStackTrace();
             return Collections.emptyList();

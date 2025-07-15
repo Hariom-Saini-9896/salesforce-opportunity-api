@@ -1,0 +1,5 @@
+com/example/opportunity/model/OpportunityDTO.class
+com/example/opportunity/service/SalesforceService.class
+com/example/opportunity/config/SalesforceConfig.class
+com/example/opportunity/OpportunityApplication.class
+com/example/opportunity/controller/OpportunityController.class

@@ -1,0 +1,5 @@
+/workspaces/salesforce-opportunity-api/src/main/java/com/example/opportunity/config/SalesforceConfig.java
+/workspaces/salesforce-opportunity-api/src/main/java/com/example/opportunity/OpportunityApplication.java
+/workspaces/salesforce-opportunity-api/src/main/java/com/example/opportunity/service/SalesforceService.java
+/workspaces/salesforce-opportunity-api/src/main/java/com/example/opportunity/controller/OpportunityController.java
+/workspaces/salesforce-opportunity-api/src/main/java/com/example/opportunity/model/OpportunityDTO.java
